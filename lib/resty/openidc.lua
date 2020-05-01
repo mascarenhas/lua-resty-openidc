@@ -466,7 +466,7 @@ function openidc.call_token_endpoint(opts, endpoint, body, auth, endpoint_name, 
         assertion.header.kid = opts.client_rsa_private_key_id
       end
 
-      local r_jwt = require("resty.jwt")
+      local r_jwt = require("kong.plugins.oidc.jwt")
       body.client_assertion = r_jwt:sign(key, assertion)
       log(DEBUG, auth .. ": client_id, client_assertion_type and client_assertion being sent in POST body")
     end
@@ -932,7 +932,7 @@ end
 -- parse a JWT and verify its signature (if present)
 local function openidc_load_jwt_and_verify_crypto(opts, jwt_string, asymmetric_secret,
 symmetric_secret, expected_algs, ...)
-  local r_jwt = require("resty.jwt")
+  local r_jwt = require("kong.plugins.oidc.jwt")
   local enc_hdr, enc_payload, enc_sign = string.match(jwt_string, '^(.+)%.(.+)%.(.*)$')
   if enc_payload and (not enc_sign or enc_sign == "") then
     local jwt = openidc_load_jwt_none_alg(enc_hdr, enc_payload)
@@ -990,7 +990,7 @@ symmetric_secret, expected_algs, ...)
     -- validators for the exp and nbf claims if they are
     -- present. These validators need to know the configured slack
     -- value
-    local jwt_validators = require("resty.jwt-validators")
+    local jwt_validators = require("kong.plugins.oidc.jwt-validators")
     jwt_validators.set_system_leeway(opts.iat_slack and opts.iat_slack or 120)
   end
 

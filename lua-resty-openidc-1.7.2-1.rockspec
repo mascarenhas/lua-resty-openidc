@@ -30,6 +30,6 @@ dependencies = {
 build = {
     type = "builtin",
     modules = {
-        ["resty.openidc"] = "lib/resty/openidc.lua"
+        ["kong.plugins.oidc.openidc"] = "lib/resty/openidc.lua"
     }
 }

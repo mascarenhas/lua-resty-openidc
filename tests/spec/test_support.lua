@@ -109,7 +109,7 @@ JWT_SIGN_SECRET]=]
         if os.getenv('coverage') then
           require("luacov.runner")("/spec/luacov/settings.luacov")
         end
-        oidc = require "resty.openidc"
+        oidc = require "kong.plugins.oidc.openidc"
         cjson = require "cjson"
         delay = function(delay_response)
           if delay_response > 0 then
@@ -125,7 +125,7 @@ JWT_SIGN_SECRET]=]
               header = TOKEN_HEADER,
               payload = payload
             }
-            local jwt = require "resty.jwt"
+            local jwt = require "kong.plugins.oidc.jwt"
             return jwt:sign(sign_secret, jwt_content)
           else
             local header = b64url({

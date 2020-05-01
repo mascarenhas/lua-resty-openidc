@@ -247,7 +247,7 @@ h2JHukolz9xf6qN61QMLSd83+kwoBr2drp6xg3eGDLIkQCQLrkY=
           }
 
           -- call authenticate for OpenID Connect user authentication
-          local res, err = require("resty.openidc").authenticate(opts)
+          local res, err = require("kong.plugins.oidc.openidc").authenticate(opts)
 
           if err then
             ngx.status = 500
@@ -283,14 +283,14 @@ h2JHukolz9xf6qN61QMLSd83+kwoBr2drp6xg3eGDLIkQCQLrkY=
 
 ```lua
 -- check session, but do not redirect to auth if not already logged in
-local res, err = require("resty.openidc").authenticate(opts, nil, "pass")
+local res, err = require("kong.plugins.oidc.openidc").authenticate(opts, nil, "pass")
 ```
 
 ## Check authentication only and deny unauthenticated access
 
 ```lua
 -- check session, do not redirect to auth if not already logged in but return an error instead
-local res, err = require("resty.openidc").authenticate(opts, nil, "deny")
+local res, err = require("kong.plugins.oidc.openidc").authenticate(opts, nil, "deny")
 ```
 
 ## Sessions and Locking
@@ -302,7 +302,7 @@ be locked when it is returned. In this case you may want to close it
 explicitly
 
 ```lua
-local res, err, target, session = require("resty.openidc").authenticate(opts)
+local res, err, target, session = require("kong.plugins.oidc.openidc").authenticate(opts)
 session:close()
 ```
 
@@ -386,7 +386,7 @@ lAc5Csj0o5Q+oEhPUAVBIF07m4rd0OvAVPOCQ2NJhQSL1oWASbf+fg==
           }
 
           -- call bearer_jwt_verify for OAuth 2.0 JWT validation
-          local res, err = require("resty.openidc").bearer_jwt_verify(opts)
+          local res, err = require("kong.plugins.oidc.openidc").bearer_jwt_verify(opts)
 
            if err or not res then
             ngx.status = 403
@@ -454,7 +454,7 @@ http {
           }
 
           -- call introspect for OAuth 2.0 Bearer Access Token validation
-          local res, err = require("resty.openidc").introspect(opts)
+          local res, err = require("kong.plugins.oidc.openidc").introspect(opts)
 
           if err then
             ngx.status = 403
@@ -554,7 +554,7 @@ http {
           }
 
           -- call introspect for OAuth 2.0 Bearer Access Token validation
-          local res, err = require("resty.openidc").introspect(opts)
+          local res, err = require("kong.plugins.oidc.openidc").introspect(opts)
 
           if err then
             ngx.status = 403
@@ -584,7 +584,7 @@ Logging can be customized, including using custom logger and remapping OpenIDC's
 default log levels, e.g:
 
 ```lua
-local openidc = require("resty.openidc")
+local openidc = require("kong.plugins.oidc.openidc")
 openidc.set_logging(nil, { DEBUG = ngx.INFO })
 ```
 
